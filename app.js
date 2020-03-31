@@ -91,7 +91,7 @@ passport.use(
 			clientID: process.env.FACEBOOK_APP_ID,
 			clientSecret: process.env.FACEBOOK_APP_SECRET,
 			callbackURL:
-				"https://secret-confession.herokuapp.com//auth/facebook/secrets"
+				"https://secret-confession.herokuapp.com/auth/facebook/secrets"
 		},
 		function(accessToken, refreshToken, profile, done) {
 			User.findOrCreate({ facebookId: profile.id }, function(err, user) {
