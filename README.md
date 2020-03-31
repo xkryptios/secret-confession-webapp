@@ -4,4 +4,4 @@ a simple web app allowing users to submit their secrets/cofessions anonymous
 user can signup/login through manual registration,google or facebook  
   
 main libraries used express, ejs , body-parser, mongoose, passport, passport-local,  
-passport-lcoal-mongoose, passport-google-oauth20, passport-facebook, mongo-connect
+passport-local-mongoose, passport-google-oauth20, passport-facebook, mongo-connect
