@@ -3,35 +3,39 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const session = require("cookie-session");
+const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 const FacebookStrategy = require("passport-facebook").Strategy;
+const MongoStore = require("connect-mongo")(session);
 
 const app = express();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 //confirgure express session
-app.use(
-	session({
-		//this could be any string, not sure what its for
-		secret: "Our little secret.",
-		resave: false,
-		saveUninitialized: false
-	})
-);
-//initialise passports and allow passport to use session
-app.use(passport.initialize());
-app.use(passport.session());
 
 //connnet to mongodb
 mongoose.connect(process.env.MONGOSERVER, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
 });
+
+app.use(
+	session({
+		//this could be any string, not sure what its for
+		secret: "Our little secret.",
+		resave: false,
+		saveUninitialized: false,
+		store: new MongoStore({ mongooseConnection: mongoose.connection })
+	})
+);
+
+//initialise passports and allow passport to use session
+app.use(passport.initialize());
+app.use(passport.session());
 
 //create a new mongoose schema object and create a mongoose model
 //need to include every data type from OAuth
